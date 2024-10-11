@@ -37,9 +37,23 @@ document.querySelector('#reset').addEventListener('click', () => {
 })
 
 const generateChords = () => {
-    console.log('chords generated')
+    clearChords()
+    let chordList = []
+    let pattern = []
+    const length = document.querySelector('#length').value
+    document.querySelectorAll("input[type=checkbox]").forEach((type) => {
+        if (!type.checked) return
+        chordList = chordList.concat(chords[type.value])
+    })
+    for (let i = 0; i < length; i++) {
+        let chord = chordList[Math.floor(Math.random() * chordList.length)]
+        pattern.push(chord)
+        if (document.querySelector('#repeat').value === 'Yes') continue
+        chordList = chordList.filter((c) => c !== chord)
+    }
+    document.querySelector('#chords').appendChild(document.createTextNode(pattern.join(' ')))
 }
 
 const clearChords = () => {
-    console.log('chords cleared')
+    document.querySelector('#chords').innerHTML = ''
 }
